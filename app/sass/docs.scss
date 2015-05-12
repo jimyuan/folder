@@ -1,0 +1,270 @@
+@import "../../bower_components/sandal/base", "mixins";
+
+/* -------------------------------- 
+
+Main content
+
+-------------------------------- */
+
+.cd-main {
+  overflow-x: hidden;
+  > * {
+    transition: transform $fold-animation $fold-content-animation;
+  }
+  
+  &.is-open > * {
+    transform: translateX(100%);
+    transition: transform $fold-animation 0s;
+  }
+
+}
+
+.cd-gallery {
+  @include clearfix;
+}
+
+.cd-item {
+  @include size(100%, 50vh);
+  text-align: center;
+
+  /* Force Hardware Acceleration */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  transition: transform $fold-animation $fold-content-animation;
+
+  > a {
+    @include square(100%);
+    display: table;
+    overflow: hidden;
+    color: $color-6;
+    -webkit-font-smoothing: antialiased;
+
+    &.dark-text {
+      color: $color-1;
+      b {
+        border-color: $color-1;
+      }
+    }
+  }
+
+  div {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  &:nth-of-type(1) {
+    background-color: $color-1;
+  }
+
+  &:nth-of-type(2) {
+    background-color: $color-2;
+  }
+
+  &:nth-of-type(3) {
+    background-color: $color-3;
+  }
+
+  &:nth-of-type(4) {
+    background-color: $color-4;
+  }
+
+  h2 {
+    font-size: 2.2rem;
+  }
+
+  p {
+    line-height: 1.2;
+    font-size: 1.4rem;
+    opacity: 0.6;
+    padding: 1em 0;
+  }
+
+  b {
+    display: inline-block;
+    font: {
+      size: 1.2rem;
+      weight: bold;
+    }
+    text-transform: uppercase; 
+    letter-spacing: 1px;
+    padding: 1em 1.3em;
+    border-radius: 50em;
+    border: 1px solid $color-6;
+  }
+}
+
+/* -------------------------------- 
+
+folding panel
+
+-------------------------------- */
+
+.cd-folding-panel {
+  position: fixed;
+  z-index: 1;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
+  visibility: hidden;
+  overflow: hidden;
+  transition: visibility 0s $fold-animation+$fold-content-animation;
+
+  .fold-cover {
+    @include square(100%);
+    overflow: hidden;
+    position: relative;
+
+    /* enable a 3D-space for children elements */
+    perspective-origin: 0% 50%;
+    perspective: 2000px;
+
+    &:after {
+      /* 2 fold sides */
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      @include square(100%);
+
+      /* Force Hardware Acceleration */
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      transition: transform $fold-animation $fold-content-animation, 
+                  background-color $fold-animation $fold-content-animation;
+    }
+  }
+
+  .fold-cover {
+
+    &:after {
+      transform-origin: right center;
+      transform: translateX(-100%) rotateY(-90deg);
+      background-color: darken($color-3, 10%);
+    }
+  }
+
+  .cd-close {
+    /* 'X' close icon */
+    position: absolute;
+    z-index: 1;
+    display: inline-block;
+    top: 10px;
+    right: 10px;
+    height: 44px;
+    width: 44px;
+
+    /* image replacement */
+    overflow: hidden;
+    text-indent: 100%;
+    white-space: nowrap;
+
+    opacity: 0;
+    transition: opacity .2s 0s;
+
+    &:after, 
+    &:before {
+      /* lines of 'X' icon */
+      content: '';
+      position: absolute;
+      @include size(32px, 3px);
+      left: 50%;
+      top: 50%;
+      background-color: $color-2; 
+      backface-visibility: hidden;
+      transition: opacity .2s;
+    }
+
+    &:after {
+      transform: translateX(-50%) translateY(-50%) rotate(45deg);
+    }
+
+    &:before {
+      transform: translateX(-50%) translateY(-50%) rotate(-45deg);
+    }
+  }
+
+  &.is-open {
+    visibility: visible;
+    transition: visibility 0s 0s;
+
+    .fold-cover:after{
+      background-color: lighten($color-3, 12%);
+      transform: translateX(0);
+      transition: transform $fold-animation 0s, 
+                  background-color $fold-animation 0s;
+    }
+
+    .cd-close {
+      opacity: 1;
+      transition: opacity .2s $fold-animation;
+    }
+  }
+}
+
+.cd-fold-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  @include square(100%);
+  padding: 4em 2em;
+
+  visibility: hidden;
+  transition: visibility 0s $fold-content-animation;
+
+  > * {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  h2 {
+    font-size: 2.4rem;
+    transition: transform $fold-content-animation/2 $fold-content-animation/2, 
+                opacity $fold-content-animation/2 $fold-content-animation/2;
+  }
+
+  p, em {
+    line-height: 1.6;
+  }
+
+  em {
+    display: inline-block;
+    margin: 1em 0;
+    font-size: 1.8rem;
+    color: lighten($color-1, 30%);
+    transition: transform $fold-content-animation/2 $fold-content-animation/4, 
+                opacity $fold-content-animation/2 $fold-content-animation/4;
+  }
+
+  p {
+    margin-bottom: 1em;
+    font-size: 1.4rem;
+    transition: transform $fold-content-animation/2 0s, 
+                opacity $fold-content-animation/2 0s;
+  }
+
+  .is-open & {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    visibility: visible;
+    transition: visibility 0s $fold-animation;
+
+    > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h2 {
+      transition: transform $fold-content-animation/2 $fold-animation, 
+                  opacity $fold-content-animation/2 $fold-animation;
+    }
+
+    em {
+      transition: transform $fold-content-animation/2 $fold-animation+$fold-content-animation/4, 
+                  opacity $fold-content-animation/2 $fold-animation+$fold-content-animation/4;
+    }
+
+    p {
+      transition: transform $fold-content-animation/2 $fold-animation+$fold-content-animation/2, 
+                  opacity $fold-content-animation/2 $fold-animation+$fold-content-animation/2;
+    }
+  }
+}

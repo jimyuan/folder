@@ -1,0 +1,44 @@
+// colors
+
+$color-1: #363558; // Martinique
+$color-2: #544173; // Mulled Wine
+$color-3: #dadcdc; // Iron
+$color-4: #65d29b; // Emerald
+$color-5: #1c1726; // Bastille
+$color-6: #ffffff; // White
+
+// animation duration
+$fold-animation: .5s;
+$fold-content-animation: .2s*(3+1)/2; // replace 3 with number of elements that you want to animate
+
+// Sizing shortcuts
+
+@mixin size($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+@mixin square($size) {
+  @include size($size, $size);
+}
+
+// clearfix
+@mixin clearfix($extend: true) {
+  @if $extend {
+    @extend %clearfix;
+  }
+  @else {
+    &:before,
+    &:after {
+      content: "";
+      display: table;
+    }
+    &:after {
+      clear: both;
+    }
+  }
+}
+
+%clearfix {
+    @include clearfix(false);
+}
