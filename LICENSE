@@ -1,6 +1,10 @@
 The MIT License (MIT)
 
+<<<<<<< HEAD
 Copyright (c) 2014 Jim
+=======
+Copyright (c) 2015 Jim
+>>>>>>> f824089352e81fd29b6f52ee3d3be9187911ad89
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +23,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+<<<<<<< HEAD
+=======
+
+>>>>>>> f824089352e81fd29b6f52ee3d3be9187911ad89
